@@ -1,0 +1,21 @@
+language: bash
+
+services: docker
+
+env:
+  - TAG=latest  PHPV=7.2 AST_VER=1.0.0 PROTO_VER=3.6.1 SWOOLE_VER=1.10.5
+  - TAG=7.2-sw4 PHPV=7.2 AST_VER=1.0.0 PROTO_VER=3.6.1 SWOOLE_VER=4.2.11
+  - TAG=7.3-sw1 PHPV=7.3 AST_VER=1.0.0 PROTO_VER=3.6.1 SWOOLE_VER=1.10.5
+  - TAG=7.3-sw4 PHPV=7.3 AST_VER=1.0.0 PROTO_VER=3.6.1 SWOOLE_VER=4.2.11
+
+script:
+  - |
+    (
+      set -x
+      docker build -t carno/php:$TAG \
+        --build-arg PHP_BASE=php:$PHPV-cli-alpine \
+        --build-arg AST_VER=$AST_VER \
+        --build-arg PROTO_VER=$PROTO_VER \
+        --build-arg SWOOLE_VER=$SWOOLE_VER \
+      runtime
+    )

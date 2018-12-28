@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+NAME=$1
+VERSION=$2
+CONFIGURE=$3
+
+TMP=/tmp/${NAME}
+
+mkdir ${TMP} && \
+wget -qO- https://pecl.php.net/get/${NAME}-${VERSION}.tgz | tar zx -C ${TMP} --strip 1 && \
+cd ${TMP} && \
+phpize && \
+./configure ${CONFIGURE} && \
+make -j $(nproc) && make install && \
+rm -rf ${TMP}
