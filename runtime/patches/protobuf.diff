@@ -1,0 +1,21 @@
+--- protobuf.h	2018-08-04 07:32:27.000000000 +0800
++++ protobuf.h	2018-12-29 10:33:44.000000000 +0800
+@@ -134,7 +134,8 @@
+     INIT_CLASS_ENTRY_EX(class_type, CLASSNAME, strlen(CLASSNAME),            \
+                         LOWWERNAME##_methods);                               \
+     LOWWERNAME##_type = zend_register_internal_class(&class_type TSRMLS_CC); \
+-    LOWWERNAME##_type->create_object = message_create;
++    LOWWERNAME##_type->create_object = message_create;                       \
++    zend_do_inheritance(LOWWERNAME##_type, message_type TSRMLS_CC);
+ #define PHP_PROTO_INIT_SUBMSGCLASS_END \
+   }
+ 
+@@ -400,7 +401,7 @@
+     INIT_CLASS_ENTRY_EX(class_type, CLASSNAME, strlen(CLASSNAME),            \
+                         LOWWERNAME##_methods);                               \
+     LOWWERNAME##_type = zend_register_internal_class(&class_type TSRMLS_CC); \
+-    LOWWERNAME##_type->create_object = message_create;
++    zend_do_inheritance(LOWWERNAME##_type, message_type TSRMLS_CC);
+ #define PHP_PROTO_INIT_SUBMSGCLASS_END \
+   }
+

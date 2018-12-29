@@ -18,6 +18,7 @@ RUN apk add --no-cache \
 RUN docker-php-ext-install bcmath
 
 ADD ext-installer /usr/bin
+ADD patches /tmp
 
 ARG AST_VER
 RUN ext-installer ast $AST_VER

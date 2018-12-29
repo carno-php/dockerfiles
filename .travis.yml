@@ -3,19 +3,21 @@ language: bash
 services: docker
 
 env:
-  - TAG=latest  PHPV=7.2 AST_VER=1.0.0 PROTO_VER=3.6.1 SWOOLE_VER=1.10.5
-  - TAG=7.2-sw4 PHPV=7.2 AST_VER=1.0.0 PROTO_VER=3.6.1 SWOOLE_VER=4.2.11
-  - TAG=7.3-sw1 PHPV=7.3 AST_VER=1.0.0 PROTO_VER=3.6.1 SWOOLE_VER=1.10.5
-  - TAG=7.3-sw4 PHPV=7.3 AST_VER=1.0.0 PROTO_VER=3.6.1 SWOOLE_VER=4.2.11
+  - TAG=latest  PHP=7.2 V_AST=1.0.0 V_PROTO=3.6.1 V_SWOOLE=1.10.5
+  - TAG=7.2-sw4 PHP=7.2 V_AST=1.0.0 V_PROTO=3.6.1 V_SWOOLE=4.2.11
+  - TAG=7.3-sw4 PHP=7.3 V_AST=1.0.0 V_PROTO=3.6.1 V_SWOOLE=4.2.11
 
 script:
+  - docker pull carno/php:$TAG || true
   - |
     (
       set -x
       docker build -t carno/php:$TAG \
-        --build-arg PHP_BASE=php:$PHPV-cli-alpine \
-        --build-arg AST_VER=$AST_VER \
-        --build-arg PROTO_VER=$PROTO_VER \
-        --build-arg SWOOLE_VER=$SWOOLE_VER \
+        --build-arg PHP_BASE=php:$PHP-cli-alpine \
+        --build-arg AST_VER=$V_AST \
+        --build-arg PROTO_VER=$V_PROTO \
+        --build-arg SWOOLE_VER=$V_SWOOLE \
       runtime
     )
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push carno/php:$TAG

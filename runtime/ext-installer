@@ -6,10 +6,18 @@ CONFIGURE=$3
 
 TMP=/tmp/${NAME}
 
-mkdir ${TMP} && \
-wget -qO- https://pecl.php.net/get/${NAME}-${VERSION}.tgz | tar zx -C ${TMP} --strip 1 && \
-cd ${TMP} && \
+mkdir ${TMP} && cd ${TMP}
+
+wget -qO- https://pecl.php.net/get/${NAME}-${VERSION}.tgz | tar zx -C ${TMP} --strip 1
+
+PATCH="/tmp/${NAME}.diff"
+if [[ -f ${PATCH} ]]; then
+    patch < ${PATCH}
+fi
+
 phpize && \
 ./configure ${CONFIGURE} && \
-make -j $(nproc) && make install && \
+make -j $(nproc) && \
+make install
+
 rm -rf ${TMP}
