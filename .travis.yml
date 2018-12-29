@@ -19,5 +19,9 @@ script:
         --build-arg SWOOLE_VER=$V_SWOOLE \
       runtime
     )
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push carno/php:$TAG
+  - |
+    (
+      set -e
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      docker push carno/php:$TAG
+    )
